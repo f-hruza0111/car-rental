@@ -1,0 +1,18 @@
+User/Client - renta aute
+	- vidi listu auta u ponudi
+	- filtriranje po razlicitim karakteristikama
+
+Rent-a-Car obrt - oglasava automobile
+		- ima popis dostupnih automobila
+		- prati koji korisnik trenutno renta koji auto
+		- dodaje aute u ponudu
+
+Oglas 	- firma koja oglasva
+	- datum trajanja/isteka  
+
+REACT + REST API Spring
+
+Uloge:
+ADMIN
+USER
+BUSSINESS
