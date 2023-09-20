@@ -1,7 +1,7 @@
 package com.hruza.carrental.entity;
 
 public enum Role {
-    USER,
-    BUSINESS,
+    CUSTOMER,
+    RENTAL_COMPANY,
     ADMIN
 }
