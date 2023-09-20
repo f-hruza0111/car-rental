@@ -1,14 +1,28 @@
-    "firstName": "User_1",
-    "lastName": "User_1_last",
-    "password": "password",
-    "email": "user1@email.com",
-    "role": "USER",
-    "address": "Fake Street 4, 1041421, Nonexistant"
 
+    {
+        "firstName": "User_1",
+        "lastName": "User_1_last",
+        "password": "password",
+        "email": "user1@email.com",
+        "role": "USER",
+        "address": "Fake Street 4, 1041421, Nonexistant"
+    }
 
     {
         "name": "Rental LLC.",
         "password": "password",
         "email": "rental@gmail.com",
         "address": "Fake Street 4"
+    }
+
+    {
+       "make": "Ford",
+       "model": "Mustang",
+       "horsepower": "390",
+       "kilometers": "120000",
+       "yearOfProduction": 2017,
+       "registeredUntil": "9-12-2023",
+       "engineType": "PETROL",
+       "transmissionType": "MANUAL",
+       "powerDelivery": "RWD"
     }

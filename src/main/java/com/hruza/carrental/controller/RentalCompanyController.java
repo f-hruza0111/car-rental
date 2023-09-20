@@ -32,7 +32,7 @@ public class RentalCompanyController {
 
 
 
-        return rentalCompanyService.registerCompany(rentalCompany);
+        return rentalCompanyService.registerUser(rentalCompany);
     }
 
     @PostMapping("/add-car")
