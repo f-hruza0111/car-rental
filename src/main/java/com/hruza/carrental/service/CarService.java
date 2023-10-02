@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class CarService {
     private final CarRepository repository;
 
+
     public Long addCar(Car car) {
         return repository.save(car).getId();
     }

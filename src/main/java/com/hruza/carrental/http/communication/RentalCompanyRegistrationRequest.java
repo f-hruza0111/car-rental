@@ -1,4 +1,4 @@
-package com.hruza.carrental.request;
+package com.hruza.carrental.http.communication;
 
 public record RentalCompanyRegistrationRequest(
         String name,
@@ -6,7 +6,9 @@ public record RentalCompanyRegistrationRequest(
 
         String email,
 
-        String password
+        String password,
+
+        String phoneNumber
 
 ) {
 }

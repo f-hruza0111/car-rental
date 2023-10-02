@@ -4,6 +4,7 @@ import com.hruza.carrental.entity.AppUser;
 import com.hruza.carrental.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Primary
 @RequiredArgsConstructor
 public class AppUserService implements UserDetailsService {
 
@@ -50,4 +52,11 @@ public class AppUserService implements UserDetailsService {
 
         return user;
     }
+
+//    public AppUser findByLogin(String login) {
+//        AppUser user = repository.findByLogin(login)
+//                .orElseThrow(() -> new IllegalStateException("User not found"));
+//
+//        return user
+//    }
 }

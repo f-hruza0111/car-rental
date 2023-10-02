@@ -4,7 +4,6 @@
         "lastName": "User_1_last",
         "password": "password",
         "email": "user1@email.com",
-        "role": "USER",
         "address": "Fake Street 4, 1041421, Nonexistant"
     }
 
@@ -16,13 +15,14 @@
     }
 
     {
-       "make": "Ford",
-       "model": "Mustang",
-       "horsepower": "390",
-       "kilometers": "120000",
-       "yearOfProduction": 2017,
-       "registeredUntil": "9-12-2023",
-       "engineType": "PETROL",
-       "transmissionType": "MANUAL",
-       "powerDelivery": "RWD"
+           "make": "Ford",
+           "model": "Mustang",
+           "horsepower": "390",
+           "kilometers": "120000",
+           "yearOfProduction": 2017,
+           "registeredUntil": "2023-12-31",
+           "engineType": "PETROL",
+           "transmissionType": "MANUAL",
+           "powerDelivery": "RWD",
+           "licensePlate":"ZG-34214HP"
     }
