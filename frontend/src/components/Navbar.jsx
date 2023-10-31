@@ -70,12 +70,16 @@ function Navbar() {
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <Link class="nav-link" to="/">Ads</Link>
-          </li>
-
+          
+          {role !== "RENTAL_COMPANY"  ? 
+            <li class="nav-item active">
+              <Link class="nav-link" to="/">Ads</Link>
+            </li> 
+            : null
+          }
           {!loggedIn 
             ? <>
+
                 <li class="nav-item">
                 <Link class="nav-link" to="/customer/registration">Customer registration</Link>
                 </li>

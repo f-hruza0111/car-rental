@@ -7,14 +7,19 @@ async function handleSubmit(e, url){
   
     const jsonData = serializeFormToJSON(e)
  
-    const res = await axios.post(url, jsonData, {
+    try {
+      const res = await axios.post(url, jsonData, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
     
 
-    return res;
+      return res;
+    } catch(err){
+      console.log(`Error while submiting form to ${url}. Error: ${err}`)
+    }
+    
 
 }
 

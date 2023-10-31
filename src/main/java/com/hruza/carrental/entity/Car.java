@@ -34,7 +34,7 @@ public class Car {
     @JsonView(View.Car.class)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rental_company_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonView(View.CustomerCar.class)

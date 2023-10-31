@@ -12,7 +12,6 @@ function RentalCompanyRegistration(){
 
     return (
         <div>
-            <Navbar></Navbar>
             <div className="container">
                 <form onSubmit={(e) => handler(e)}>
                     <div className="form-group">

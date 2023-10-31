@@ -1,5 +1,4 @@
-import {Link} from 'react-router-dom'
-import Navbar from './Navbar';
+
 import handleSubmit from '../api/handleSubmit';
 function CustomerRegistration(){
 
@@ -12,7 +11,7 @@ function CustomerRegistration(){
 
     return (
         <div>
-            <Navbar/>
+            
             <div className='container'>
            
                 <form onSubmit={(e) => handler(e)}>

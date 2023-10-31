@@ -6,6 +6,7 @@ import com.hruza.carrental.entity.Car;
 import com.hruza.carrental.entity.CarRentalAd;
 import com.hruza.carrental.entity.RentalCompany;
 import com.hruza.carrental.entity.RentalReceipt;
+import com.hruza.carrental.page.JsonPage;
 import com.hruza.carrental.repository.CarRentalAdRepository;
 import com.hruza.carrental.repository.CarRepository;
 import com.hruza.carrental.repository.RentalCompanyRepository;
@@ -16,6 +17,9 @@ import com.hruza.carrental.view.CompanyCarView;
 import com.hruza.carrental.view.ReceiptView;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -137,11 +141,13 @@ public class RentalCompanyService extends AppUserService {
 
     }
 
-    public List<CarRentalAd> getAds(Long companyID) {
-        return ((RentalCompany)repository
-                .findById(companyID)
-                .orElseThrow(() -> new IllegalStateException("Company with ID = " + companyID + " not found"))
-        ).getAds();
+    public JsonPage<CarRentalAd> getAds(Long companyID, int page, int size, Sort sort) {
+
+        PageRequest pageable = PageRequest.of(page, size, sort);
+        Page<CarRentalAd> ads = adRepository.findAllByRentalCompany((RentalCompany) repository.findById(companyID).orElseThrow(), pageable);
+        return new JsonPage<>(ads, pageable);
+
+
     }
 
 
@@ -175,11 +181,8 @@ public class RentalCompanyService extends AppUserService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteAd(Long rentalCompanyID, Long adID) {
-       List<CarRentalAd> ads = getAds(rentalCompanyID);
-       CarRentalAd ad = ads.stream()
-               .filter(a -> a.getId().equals(adID))
-               .findFirst()
-               .orElseThrow(() -> new IllegalStateException("Ad with id = " + adID + " not owned by company"));
+//       List<CarRentalAd> ads = getAds(rentalCompanyID, page, size, sort);
+       CarRentalAd ad = adRepository.findByIdAndRentalCompanyId(adID, rentalCompanyID).orElseThrow();
 
        adRepository.delete(ad);
     }

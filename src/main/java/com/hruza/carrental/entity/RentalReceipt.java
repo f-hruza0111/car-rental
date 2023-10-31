@@ -35,7 +35,7 @@ public class RentalReceipt {
     @JsonView(View.CustomerReceipt.class)
     private RentalCompany rentalCompany;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id", nullable = false, unique = false)
     @JsonView(View.Receipt.class)
     private Car car;

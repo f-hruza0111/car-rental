@@ -19,8 +19,8 @@ function Login(){
 
     return(
         <div>
-            <Navbar/>
             <div className='container'>   
+                <h2>Please log in</h2>
                 <form onSubmit={(e) => handleLogin(e)}>
                     <div class="form-group">
                         <label for="email">Email address</label>

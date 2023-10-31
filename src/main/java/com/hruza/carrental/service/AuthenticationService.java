@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +36,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
 
+
+    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -77,18 +80,20 @@ public class AuthenticationService {
                 .build();
     }
 
+    @Transactional
     public void revokeAllUserTokens(Long userID){
         List<Token> tokens = tokenRepository.findAllValidTokensByUser(userID);
         invalidateTokens(tokens);
     }
 
 
-
+    @Transactional
     public void revokeAllAccessTokens(Long userID){
         List<Token> tokens = tokenRepository.findAllValidAccessTokensByUser(userID);
         invalidateTokens(tokens);
     }
 
+    @Transactional()
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         String refreshToken;

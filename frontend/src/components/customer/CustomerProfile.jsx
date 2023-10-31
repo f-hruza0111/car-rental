@@ -1,4 +1,4 @@
-import sendRequst from "../../api/protectedHttpRequsts"
+import sendRequest from "../../api/protectedHttpRequsts"
 import Navbar from "../Navbar";
 import handleUpdate from '../../api/handleUpdate'
 import { useState, useEffect } from "react";
@@ -11,8 +11,8 @@ function CustomerProfile(){
     
     const url = `/customer/${user_id}`
 
-    const fetchAds = async () => {
-        const res = await sendRequst('get', url, "");
+    const fetchCustomerProfile = async () => {
+        const res = await sendRequest('get', url, "");
     
         //  console.log(res);
         setProfile(res.data);
@@ -30,13 +30,13 @@ function CustomerProfile(){
     
     
       useEffect(() => {
-         fetchAds()
+         fetchCustomerProfile()
       }, []);
 
   return (  
   
     <>
-            <Navbar/>
+           
             <div className='container'>   
                 <form onSubmit={e => handleUpdate(e, url)}>
                     <div class="form-group">

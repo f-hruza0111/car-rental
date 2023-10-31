@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import axios from "../api/axios";
 import sendRequest from "../api/protectedHttpRequsts";
 import serializeFormToJSON from "../api/serializeFormToJSON";
@@ -7,6 +8,7 @@ function Card({ad}){
     // console.log(ad)
 
     var user_id = sessionStorage.getItem("user_id");
+    var role = sessionStorage.getItem('role')
     var rentURL =   "/customer/" + user_id + "/" + ad.id + "/rent"
     // console.log(rentURL)
 
@@ -15,6 +17,8 @@ function Card({ad}){
         let res = null;
 
         if(user_id !== undefined && user_id !== null){
+            if(role !== 'CUSTOMER') {window.location.href ='/'}
+
             const data = serializeFormToJSON(e)
             res = await sendRequest('post', rentURL, data)
         } else {
@@ -29,15 +33,21 @@ function Card({ad}){
 
    return(
 
-    <div className="card" style={{width: 20 + 'rem', margin: 2 + 'rem'}}>
+    <div className="card  text-bg-dark p-3" style={{width: 20 + 'rem', margin: 2 + 'rem'}}>
 
         
             <div className="card-body">
-                <h5 className="card-title">{ad.car.make} {ad.car.model}</h5>
-                <h6 className="card-subtitle">{ad.car.yearOfProduction}</h6>
+                <h5 className="card-title">{ad.car.make} {ad.car.model} <button className="btn btn-primary">Details</button></h5>
+                <h6 className="card-subtitle">Year of production: {ad.car.yearOfProduction}</h6>
                 
-            
-                <a href={/*change to Link*/"http://localhost:8080/car-rental/company-profile/" + ad.rentalCompany.id}  className="card-link">Rental Company: {ad.rentalCompany.name}</a>
+                <Link className="card-link" to = 
+                    {{
+                        pathname: "/company/details",
+                        search: `?id=${ad.rentalCompany.id}`
+                    }}>
+                    Rental Company: {ad.rentalCompany.name}
+                </Link>
+                
                 
                 
             </div>

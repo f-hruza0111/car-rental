@@ -31,7 +31,7 @@ function Fleet(){
 
     return (
         <>
-            <Navbar/>
+           
             
             <button type="button" class="btn btn-dark" onClick=
             {

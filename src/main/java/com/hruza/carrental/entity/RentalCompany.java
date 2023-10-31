@@ -2,10 +2,7 @@ package com.hruza.carrental.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,22 +32,22 @@ public class RentalCompany extends AppUser{
    private String address;
    private String logoPictureLink;
 
-   @OneToMany(mappedBy = "rentalCompany", orphanRemoval = true)
+   @OneToMany(mappedBy = "rentalCompany", orphanRemoval = true, fetch = FetchType.LAZY)
    @JsonManagedReference
    private List<Car> cars;
 
     @JsonView(View.Base.class)
-   private Integer customerRating;
+   private Double customerRating;
 
    @Column(unique = true)
    @JsonView(View.Base.class)
    private String phoneNumber;
 
-   @OneToMany(mappedBy = "rentalCompany", orphanRemoval = true)
+   @OneToMany(mappedBy = "rentalCompany", orphanRemoval = true, fetch = FetchType.LAZY)
    @JsonManagedReference
    private List<CarRentalAd> ads;
 
-   @OneToMany(mappedBy = "rentalCompany", orphanRemoval = true)
+   @OneToMany(mappedBy = "rentalCompany", orphanRemoval = true,  fetch = FetchType.LAZY)
     @JsonManagedReference
    private List<RentalReceipt> receipts;
 

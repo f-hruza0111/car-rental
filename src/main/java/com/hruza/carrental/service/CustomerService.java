@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hruza.carrental.entity.Car;
 import com.hruza.carrental.entity.Customer;
 import com.hruza.carrental.entity.RentalReceipt;
+import com.hruza.carrental.repository.CarRepository;
 import com.hruza.carrental.repository.CustomerRepository;
 import com.hruza.carrental.repository.RentalReceiptRepository;
 import com.hruza.carrental.http.communication.CustomerEditRequest;
+import com.hruza.carrental.view.CustomerCarView;
 import com.hruza.carrental.view.ReceiptView;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +19,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,11 +29,15 @@ import java.util.List;
 public class CustomerService extends AppUserService{
     private final CustomerRepository repository;
     private final RentalReceiptRepository receiptRepository;
+
+    private final CarRepository carRepository;
+
     @Autowired
-    public CustomerService(CustomerRepository appUserRepositories, RentalReceiptRepository receiptRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public CustomerService(CustomerRepository appUserRepositories, RentalReceiptRepository receiptRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CarRepository carRepository) {
         super(appUserRepositories, bCryptPasswordEncoder);
         this.repository = appUserRepositories;
         this.receiptRepository = receiptRepository;
+        this.carRepository = carRepository;
     }
 
     public Customer findCustomerById(Long id){
@@ -91,27 +99,30 @@ public class CustomerService extends AppUserService{
         return receipt;
     }
 
-    public List<Car> getRentedCars(Long id) {
+    public List<CustomerCarView> getRentedCars(Long id) {
         Customer customer = findCustomerById(id);
-        return customer.getRentedCars();
+
+        LocalDate rentedUntil;
+        return customer.getRentedCars().stream()
+                .map(CustomerCarView::new)
+                .collect(Collectors.toList());
     }
 
-    public Car getRentedCar(Long id, Long carID) {
-        List<Car> cars = getRentedCars(id);
-        return cars.stream()
-                .filter(car -> car.getId().equals(carID))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Car not found"));
-    }
+//    public Car getRentedCar(Long id, Long carID) {
+//
+//    }
 
 
     public void cancelRentedCar(Long id, Long carID) {
-        Car car = getRentedCar(id, carID);
+        Car car = carRepository.findById(carID).orElseThrow();
+        Customer customer = findCustomerById(id);
+
+
+        if(!car.getRentingCustomer().equals(customer)) throw new IllegalStateException("Car not rented by customer with ID=" + id);
 
         car.setRentingCustomer(null);
         car.setAvailable(true);
 
-        Customer customer = findCustomerById(id);
         customer.getRentedCars().remove(car);
 
         repository.save(customer);

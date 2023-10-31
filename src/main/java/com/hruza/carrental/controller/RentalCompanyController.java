@@ -6,12 +6,14 @@ import com.hruza.carrental.entity.*;
 import com.hruza.carrental.http.communication.CarRequest;
 import com.hruza.carrental.http.communication.AdRequest;
 import com.hruza.carrental.http.communication.RentalCompanyRegistrationRequest;
+import com.hruza.carrental.page.JsonPage;
 import com.hruza.carrental.service.RentalCompanyService;
 import com.hruza.carrental.view.CompanyCarView;
 import com.hruza.carrental.view.View;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -135,8 +137,18 @@ public class RentalCompanyController {
     @GetMapping ("/{rentalCompanyID}/ads")
     @JsonView(View.Ad.class)
     //todo: remove company info from json
-    public List<CarRentalAd> getCompanyAds(@PathVariable Long rentalCompanyID){
-        return rentalCompanyService.getAds(rentalCompanyID);
+    public JsonPage<CarRentalAd> getCompanyAds(@PathVariable Long rentalCompanyID,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "1") int size,
+                                               @RequestParam(required = false, defaultValue = "id") String sortCriteria,
+                                               @RequestParam(required = false, defaultValue = "0") Integer sortOrder){
+
+        Sort sort;
+
+
+        if(sortOrder == 1) sort = Sort.by(sortCriteria).descending();
+        else sort = Sort.by(sortCriteria).ascending();
+        return rentalCompanyService.getAds(rentalCompanyID, page, size, sort);
     }
 
     @PostMapping ("/{rentalCompanyID}/ads/{adID}")

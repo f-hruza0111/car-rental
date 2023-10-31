@@ -7,6 +7,7 @@ import com.hruza.carrental.http.communication.CustomerRegistrationRequest;
 import com.hruza.carrental.http.communication.RentRequest;
 import com.hruza.carrental.service.CarRentalAdService;
 import com.hruza.carrental.service.CustomerService;
+import com.hruza.carrental.view.CustomerCarView;
 import com.hruza.carrental.view.View;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -94,16 +95,15 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/cars")
-    @JsonView(View.CustomerCar.class)
-    public List<Car> getRentedCars(@PathVariable Long id){
+    public List<CustomerCarView> getRentedCars(@PathVariable Long id){
         return customerService.getRentedCars(id);
     }
 
-    @GetMapping("/{id}/cars/{carID}")
-    @JsonView(View.CustomerCar.class)
-    public Car getRentedCar(@PathVariable Long id, @PathVariable Long carID){
-        return customerService.getRentedCar(id, carID);
-    }
+//    @GetMapping("/{id}/cars/{carID}")
+//    @JsonView(View.CustomerCar.class)
+//    public Car getRentedCar(@PathVariable Long id, @PathVariable Long carID){
+//        return customerService.getRentedCar(id, carID);
+//    }
 
     @PostMapping("/{id}/cars/{carID}")
     public void cancelRentedCar(@PathVariable Long id, @PathVariable Long carID){

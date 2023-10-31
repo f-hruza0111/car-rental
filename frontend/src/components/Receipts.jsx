@@ -39,7 +39,7 @@ function Receipts(){
 
 
     return (<>
-    <Navbar/>
+   
     <table class="table table-dark">
         <thead>
             {

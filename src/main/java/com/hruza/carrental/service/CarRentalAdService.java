@@ -25,6 +25,7 @@ public class CarRentalAdService {
 
     public Page<CarRentalAd> findAll(int page, int size, Sort sort){
         PageRequest pageable = PageRequest.of(page, size, sort);
-        return new JsonPage<>(repository.findAll(pageable), pageable);
+        Page content = repository.findAll(pageable);
+        return new JsonPage<>(content, pageable);
     }
 }

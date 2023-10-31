@@ -3,13 +3,14 @@ package com.hruza.carrental.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.hruza.carrental.entity.CarRentalAd;
 import com.hruza.carrental.entity.RentalCompany;
+import com.hruza.carrental.exception.AppException;
 import com.hruza.carrental.http.communication.AuthenticationRequest;
 import com.hruza.carrental.http.communication.AuthenticationResponse;
+import com.hruza.carrental.page.JsonPage;
 import com.hruza.carrental.service.AuthenticationService;
 import com.hruza.carrental.service.CarRentalAdService;
 import com.hruza.carrental.service.RentalCompanyService;
 import com.hruza.carrental.view.View;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/car-rental")
@@ -39,7 +39,12 @@ public class IndexController {
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ){
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        try {
+            return ResponseEntity.ok(authenticationService.authenticate(request));
+        } catch (Exception e){
+            throw new AppException("Error while authenticating", e);
+        }
+
     }
 
     @PostMapping("/refresh-token")
@@ -73,16 +78,27 @@ public class IndexController {
         return carRentalAdService.findAdByID(adID);
     }
 
-    @GetMapping("/company-profile/{companyID}")
+    @GetMapping("/company/details/{companyID}")
     @JsonView(View.RentalCompany.class)
     public RentalCompany getRentalCompanyProfile(@PathVariable Long companyID){
         return rentalCompanyService.findRentalCompanyById(companyID);
     }
 
-    @GetMapping("/company-profile/{companyID}/ads")
+    @GetMapping("/company/details/{companyID}/ads")
     @JsonView(View.RentalCompany.class)
-    public List<CarRentalAd> getRentalCompanyAds(@PathVariable Long companyID){
-        return rentalCompanyService.getAds(companyID);
+    public Page<CarRentalAd> getRentalCompanyAds(@PathVariable Long companyID,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "1") int size,
+                                                     @RequestParam(required = false, defaultValue = "id") String sortCriteria,
+                                                     @RequestParam(required = false, defaultValue = "0") Integer sortOrder
+    ){
+        Sort sort;
+
+
+        if(sortOrder == 1) sort = Sort.by(sortCriteria).descending();
+        else sort = Sort.by(sortCriteria).ascending();
+
+        return rentalCompanyService.getAds(companyID, page, size, sort);
     }
 
 }

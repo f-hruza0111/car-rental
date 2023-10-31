@@ -2,23 +2,33 @@ import axios from '../api/axios'
 import { useState, useEffect } from 'react'
 import AdGallery from './AdGallery'
 import Pagination from './Pagination'
-import Navbar from './Navbar'
+import { useParams } from 'react-router-dom'
 
-const Home = () => {
+const Ads = ({url, pageProp, adsPerPageProp}) => {
 
     const [ads, setAds] = useState([]);
     const [totalPages, setTotalPages] = useState();
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(pageProp)
     const [numberOfPages, setNumberOfPages] = useState(1)
-    const [adsPerPage, setAdsPerPage] = useState(9)
-  
-    const fetchAds = async () => {
-      const res = await axios.get("/ads?page=" + page + "&size=" + adsPerPage)
+    const [adsPerPage, setAdsPerPage] = useState(adsPerPageProp)
+
+    const baseUrl = 'ads?page=' + page + "&size=" + adsPerPage
+    const {id} = useParams()
+    // console.log(id)
+
+    let finalUrl = baseUrl
+    if(url !== undefined) {
+      finalUrl = url + id + '/' + baseUrl
+    }
+    
+    // console.log(urlConcat)
+    const fetchAds = async (url) => {
+      const res = await axios.get(url)
   
       //  console.log(res);
       setAds(res.data.content);
       setTotalPages(res.data.totalPages);
-      
+      // console.log(ads)
   
       //  console.log(totalPages);
       //  console.log(res.data.totalPages)
@@ -31,7 +41,7 @@ const Home = () => {
   
   
     useEffect(() => {
-       fetchAds()
+       fetchAds(finalUrl)
     }, [page]);
   
     const paginate = (pageNumber) => {
@@ -41,12 +51,12 @@ const Home = () => {
   
     return (
       <div>
-        <Navbar/>
-        <AdGallery ads = {ads}/>
+       
         <Pagination adsPerPage = {adsPerPage} totalPages = {totalPages} paginate = {paginate}/>
+        <AdGallery ads = {ads}/>
       </div>
       
     )
 }
 
-export default Home
+export default Ads

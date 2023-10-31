@@ -9,7 +9,6 @@ function AddCar(){
     return (  
   
         <>
-               <Navbar/>
                 <div className='container'>   
                     <form onSubmit={e => handleUpdate(e, url)}>
                         <div class="form-group">
